@@ -54,7 +54,7 @@ jobs:
       uses: fjogeleit/http-request-action@v1
       id: deployStaging
       with:
-        url: ${{ secrets.STAGING_URL }}"&ref="${{ github.sha }}
+        url: "${{ secrets.STAGING_URL }}&ref=${{ github.sha }}"
         
     - name: Show Response
       run: |
