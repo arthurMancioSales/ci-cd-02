@@ -1,4 +1,4 @@
-name: build-typescript-projetct
+name: Build and deploy to stage
 
 on: 
   push:
@@ -42,3 +42,21 @@ jobs:
 
       - name: Run tests with Jest
         run: npm run test
+
+  deploy-staging:
+    needs: [build, test]
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to stage
+      uses: fjogeleit/http-request-action@v1
+      id: deployStaging
+      with:
+        url: ${{ secrets.STAGING_URL }}"&"${{ github.sha }}
+        
+    - name: Show Response
+      run: |
+        echo ${{ steps.deployStaging.outputs.response }}
+        echo ${{ steps.deployStaging.outputs.headers }}
